@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Headless Shopify Storefront
 
-## Getting Started
+A headless ecommerce storefront built with Next.js App Router, TypeScript, Tailwind CSS, and Shopify's Storefront GraphQL API.
 
-First, run the development server:
+Shopify Admin remains the commerce management system. This repository contains the custom Next.js storefront.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Requirements
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Node.js 20.9 or later
+- npm
+- A Shopify development store created through the Shopify Partner Dashboard
+- A private Storefront API token with the Storefront API access needed by this app
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Local setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Install dependencies:
 
-## Learn More
+   ```bash
+   npm install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. Copy `.env.example` to `.env.local`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. In Shopify Admin, configure the Headless sales channel / Storefront API access. Add the store domain and private Storefront API token to `.env.local`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```env
+   SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
+   SHOPIFY_STOREFRONT_PRIVATE_TOKEN=your-private-storefront-token
+   SHOPIFY_API_VERSION=2026-10
+   ```
 
-## Deploy on Vercel
+   Keep the private token server-side. Do not prefix it with `NEXT_PUBLIC_`, commit it, or use an Admin API access token in its place.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. Start the development server:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   npm run dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000).
+
+## Current milestone
+
+- Server-side Shopify Storefront GraphQL client
+- Product and collection query/action foundations
+- Responsive storefront homepage
+- Featured products loaded from Shopify
+- Product detail route
+- Friendly setup and API error states when Shopify is not connected
+
+## Next milestones
+
+- Product variant selection and add-to-cart interactions
+- Cart drawer and checkout handoff
+- Collection browsing, filtering, and search
+- Customer account authentication
+- Deployment and production environment configuration
+
+## Available scripts
+
+- `npm run dev` — local development
+- `npm run lint` — ESLint
+- `npm run build` — production build
