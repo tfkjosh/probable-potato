@@ -9,7 +9,7 @@ import {
 } from "@/lib/shopify/constants";
 
 export const metadata = {
-  title: "Storefront | Shop",
+  title: "Shop",
   description: "Explore the latest products from our Shopify storefront.",
 };
 
