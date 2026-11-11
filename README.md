@@ -59,6 +59,9 @@ The private token and full Shopify cart ID (which includes a secret key) remain 
 - Featured products loaded from Shopify
 - Product detail route
 - Friendly setup and API error states when Shopify is not connected
+- Product variant selection and add-to-cart
+- Server-managed cart session with an HttpOnly cookie
+- Cart page with quantity updates, item removal, and Shopify checkout handoff
 
 ## Next milestones
 

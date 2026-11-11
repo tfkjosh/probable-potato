@@ -89,21 +89,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <p className="text-xs font-medium text-neutral-900">
                 {product.availableForSale ? "Available for purchase" : "Currently sold out"}
               </p>
-              {product.options?.filter((option) => option.name !== "Title").map((option) => (
-                <div key={option.name} className="mt-5">
-                  <p className="mb-2 text-xs font-medium text-neutral-700">{option.name}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {option.values.map((value) => (
-                      <span
-                        key={value}
-                        className="border border-neutral-200 px-3 py-2 text-xs text-neutral-600"
-                      >
-                        {value}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
             </div>
 
             <AddToCartForm variants={product.variants?.nodes ?? []} />

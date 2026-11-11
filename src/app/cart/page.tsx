@@ -3,10 +3,8 @@ import Link from "next/link";
 
 import { StoreHeader } from "@/components/storefront/store-header";
 import { CartLineControls } from "@/components/storefront/cart-line-controls";
-import {
-  checkoutAction,
-  getCartAction,
-} from "@/lib/shopify/actions/cart-server-actions";
+import { checkoutAction } from "@/lib/shopify/actions/cart-server-actions";
+import { getCurrentCart } from "@/lib/shopify/cart-server";
 
 export const metadata = {
   title: "Your cart",
@@ -25,7 +23,7 @@ interface CartPageProps {
 }
 
 export default async function CartPage({ searchParams }: CartPageProps) {
-  const [{ error }, cart] = await Promise.all([searchParams, getCartAction()]);
+  const [{ error }, cart] = await Promise.all([searchParams, getCurrentCart()]);
   const lines = cart?.lines?.edges.map(({ node }) => node) ?? [];
   const subtotal = cart?.cost?.subtotalAmount;
   const total = cart?.cost?.totalAmount;
