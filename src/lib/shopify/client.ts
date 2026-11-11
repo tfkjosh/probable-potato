@@ -22,6 +22,7 @@ export async function shopifyFetch<
   variables,
   cache = "no-store",
   tags,
+  buyerIp,
 }: ShopifyFetchOptions<TVariables>): Promise<TData> {
   if (!endpoint || !token) {
     throw new Error(
@@ -34,6 +35,9 @@ export async function shopifyFetch<
     headers: {
       "Content-Type": "application/json",
       "Shopify-Storefront-Private-Token": token,
+      ...(buyerIp 
+        ? { "X-Shopify-Buyer-IP": buyerIp }
+        : {}),
     },
     body: JSON.stringify({
       query,

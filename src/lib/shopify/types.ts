@@ -6,6 +6,7 @@ export interface ShopifyFetchOptions<
   variables?: TVariables;
   cache?: RequestCache;
   tags?: string[];
+  buyerIp?: string;
 }
 
 export interface ShopifyGraphQLError {
