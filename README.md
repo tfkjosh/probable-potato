@@ -39,6 +39,18 @@ Shopify Admin remains the commerce management system. This repository contains t
 
 5. Open [http://localhost:3000](http://localhost:3000).
 
+## Deploying on Vercel
+
+1. Import this GitHub repository into Vercel and select the Next.js framework preset.
+2. In **Project Settings → Environment Variables**, add:
+   - `SHOPIFY_STORE_DOMAIN` — your `*.myshopify.com` domain
+   - `SHOPIFY_STOREFRONT_PRIVATE_TOKEN` — the private Storefront API token
+   - `SHOPIFY_API_VERSION` — optional; defaults to `2026-10`
+3. Add the variables to Production, Preview, and Development environments as appropriate, then redeploy.
+4. No buyer-IP environment variable is needed. The server actions read Vercel's `x-forwarded-for` request header and pass its validated client IP to Shopify as `Shopify-Storefront-Buyer-IP`.
+
+The private token and full Shopify cart ID (which includes a secret key) remain server-side. Cart mutations are exposed through Server Actions in `src/lib/shopify/actions/cart-server-actions.ts`. Do not pass a cart ID or buyer IP from browser code.
+
 ## Current milestone
 
 - Server-side Shopify Storefront GraphQL client
