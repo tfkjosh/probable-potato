@@ -1,4 +1,3 @@
-
 import "server-only";
 
 import type {
@@ -25,9 +24,7 @@ export async function shopifyFetch<
   buyerIp,
 }: ShopifyFetchOptions<TVariables>): Promise<TData> {
   if (!endpoint || !token) {
-    throw new Error(
-      "Missing Shopify environment variables."
-    );
+    throw new Error("Missing Shopify environment variables.");
   }
 
   const response = await fetch(endpoint, {
@@ -39,26 +36,22 @@ export async function shopifyFetch<
         ? { "X-Shopify-Buyer-IP": buyerIp }
         : {}),
     },
-    body: JSON.stringify({
-      query,
-      variables,
-    }),
+    body: JSON.stringify({ query, variables }),
     cache,
     next: tags?.length ? { tags } : undefined,
   });
 
-  const result: ShopifyGraphQLResponse<TData> =
-    await response.json();
+  const result: ShopifyGraphQLResponse<TData> = await response.json();
 
   if (!response.ok) {
     throw new Error(
-      `Shopify API error: ${response.status} ${response.statusText}`
+      `Shopify API error: ${response.status} ${response.statusText}`,
     );
   }
 
   if (result.errors?.length) {
     throw new Error(
-      result.errors.map((error) => error.message).join("; ")
+      result.errors.map((error) => error.message).join("; "),
     );
   }
 
