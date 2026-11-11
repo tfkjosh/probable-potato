@@ -48,7 +48,9 @@ export async function getCartAction() {
     return null;
   }
 
-  return cart;
+  // The full cart ID contains Shopify's secret key. Never return it to the browser.
+  const { id: _secretCartId, ...safeCart } = cart;
+  return safeCart;
 }
 
 export async function addToCartAction(merchandiseId: string, quantity = 1) {
