@@ -30,12 +30,20 @@ export function StoreHeader() {
           ))}
         </nav>
 
-        <Link
+        <div className="flex items-center gap-3">
+          <Link
+            href="/cart"
+            className="text-xs font-medium text-neutral-700 transition-colors hover:text-neutral-950"
+          >
+            Cart
+          </Link>
+          <Link
           href="/account"
           className="rounded-full border border-neutral-300 px-4 py-2 text-xs font-medium text-neutral-800 transition-colors hover:border-neutral-950 hover:bg-neutral-950 hover:text-white"
         >
           Account
-        </Link>
+          </Link>
+        </div>
       </div>
     </header>
   );

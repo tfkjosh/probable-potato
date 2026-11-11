@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { StoreHeader } from "@/components/storefront/store-header";
+import { AddToCartForm } from "@/components/storefront/add-to-cart-form";
 import { getProduct } from "@/lib/shopify/actions/get-product";
 
 interface ProductPageProps {
@@ -105,9 +106,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               ))}
             </div>
 
-            <p className="mt-5 text-xs leading-6 text-neutral-500">
-              Secure checkout and cart actions will be connected in the next commerce milestone.
-            </p>
+            <AddToCartForm variants={product.variants?.nodes ?? []} />
           </div>
         </div>
       </main>

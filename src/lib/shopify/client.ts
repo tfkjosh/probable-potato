@@ -32,9 +32,7 @@ export async function shopifyFetch<
     headers: {
       "Content-Type": "application/json",
       "Shopify-Storefront-Private-Token": token,
-      ...(buyerIp 
-        ? { "X-Shopify-Buyer-IP": buyerIp }
-        : {}),
+      ...(buyerIp ? { "Shopify-Storefront-Buyer-IP": buyerIp } : {}),
     },
     body: JSON.stringify({ query, variables }),
     cache,
