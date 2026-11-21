@@ -1,17 +1,19 @@
 
-query GetCustomer {
-  customer {
-    id
-    firstName
-    lastName
-    displayName
+export const GET_CUSTOMER_QUERY = `#graphql
+  query GetCustomer {
+    customer {
+      id
+      firstName
+      lastName
+      displayName
 
-    emailAddress {
-      emailAddress
-    }
+      emailAddress {
+        emailAddress
+      }
 
-    phoneNumber {
-      phoneNumber
+      phoneNumber {
+        phoneNumber
+      }
     }
   }
-}
+`;
