@@ -3,6 +3,7 @@ import Link from "next/link";
 import { StoreHeader } from "@/components/storefront/store-header";
 import { ProductCard } from "@/components/storefront/product-card";
 import { getProducts } from "@/lib/shopify/actions/get-products";
+import type { ShopifyProduct } from "@/lib/shopify/types";
 import {
   SHOPIFY_STOREFRONT_PRIVATE_TOKEN,
   SHOPIFY_STORE_DOMAIN,
@@ -17,7 +18,7 @@ export default async function HomePage() {
   const isShopifyConfigured =
     Boolean(SHOPIFY_STORE_DOMAIN) && Boolean(SHOPIFY_STOREFRONT_PRIVATE_TOKEN);
 
-  let products = [];
+  let products: ShopifyProduct[] = [];
   let shopifyError = false;
 
   if (isShopifyConfigured) {
