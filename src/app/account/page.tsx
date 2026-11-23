@@ -231,7 +231,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
               {orders.map((order) => (
                 <article key={order.id} className="flex flex-wrap justify-between gap-3 py-4">
                   <div><p className="font-medium">Order #{order.number}</p><p className="mt-1 text-sm text-neutral-500">Placed {new Date(order.processedAt).toLocaleDateString()}</p></div>
-                  <div className="text-right text-sm"><p className="font-medium">{new Intl.NumberFormat(undefined, { style: "currency", currency: order.totalPrice.currencyCode }).format(Number(order.totalPrice.amount))}</p><p className="mt-1 text-neutral-500">{order.fulfillmentStatus ?? order.financialStatus ?? "Processing"}</p></div>
+                  <div className="text-right text-sm"><p className="font-medium">{new Intl.NumberFormat(undefined, { style: "currency", currency: order.totalPrice.currencyCode }).format(Number(order.totalPrice.amount))}</p><p className="mt-1 text-neutral-500">{order.fulfillmentStatus ?? order.financialStatus ?? "Processing"}</p><Link href={`/account/orders?id=${encodeURIComponent(order.id)}`} className="mt-2 inline-flex text-xs font-semibold underline underline-offset-4">View details</Link></div>
                 </article>
               ))}
             </div>
