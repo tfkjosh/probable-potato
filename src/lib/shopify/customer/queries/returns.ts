@@ -46,6 +46,16 @@ export const GET_CUSTOMER_ORDER_RETURNS_QUERY = `#graphql
           }
         }
       }
+      refunds {
+        id
+        createdAt
+        updatedAt
+        returnName
+        totalRefunded {
+          amount
+          currencyCode
+        }
+      }
       returns(first: 10) {
         nodes {
           id
