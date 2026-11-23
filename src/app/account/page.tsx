@@ -221,6 +221,17 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           </section>
         </section>
 
+        <section className="mt-12 rounded-2xl border border-neutral-200 p-6 sm:p-8">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">Order support</p>
+              <h2 className="mt-2 text-xl font-semibold">Returns & refunds</h2>
+              <p className="mt-2 text-sm text-neutral-500">Check eligible items, request a return, and follow its status.</p>
+            </div>
+            <Link href="/account/returns" className="rounded-full border border-neutral-300 px-5 py-2.5 text-sm font-medium transition hover:bg-neutral-100">Manage returns</Link>
+          </div>
+        </section>
+
         <section id="orders" className="mt-14">
           <div className="flex flex-wrap items-baseline justify-between gap-3">
             <h2 className="text-xl font-semibold">Recent orders</h2>
