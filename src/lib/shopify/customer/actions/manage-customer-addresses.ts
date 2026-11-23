@@ -73,7 +73,10 @@ function readAddressInput(formData: FormData): AddressInput | null {
     !address.city ||
     !address.zip ||
     !/^[A-Z]{2}$/.test(address.countryCode) ||
-    Object.values(address).some((item) => typeof item === "string" && item.length > 255)
+    (address.phoneNumber && !/^\+[1-9]\d{7,14}$/.test(address.phoneNumber)) ||
+    Object.values(address).some(
+      (item) => typeof item === "string" && item.length > 255
+    )
   ) {
     return null;
   }
@@ -88,12 +91,16 @@ async function getOwnedAddressIds(accessToken: string) {
   );
 
   return {
-    ids: new Set(result.customer?.addresses.nodes.map((address) => address.id) ?? []),
+    ids: new Set(
+      result.customer?.addresses.nodes.map((address) => address.id) ?? []
+    ),
     defaultId: result.customer?.defaultAddress?.id ?? null,
   };
 }
 
-function finish(status: "created" | "updated" | "deleted" | "default" | "invalid" | "failed") {
+function finish(
+  status: "created" | "updated" | "deleted" | "default" | "invalid" | "failed"
+): never {
   revalidatePath("/account");
   redirect(`/account?address=${status}`);
 }
@@ -115,14 +122,22 @@ export async function createCustomerAddress(formData: FormData): Promise<void> {
         defaultAddress: formData.get("defaultAddress") === "on",
       }
     );
+
     failed =
       !result.customerAddressCreate?.customerAddress ||
       result.customerAddressCreate.userErrors.length > 0;
-    if (failed) console.error("Shopify address creation rejected:", result.customerAddressCreate?.userErrors);
+
+    if (failed) {
+      console.error(
+        "Shopify address creation rejected:",
+        result.customerAddressCreate?.userErrors
+      );
+    }
   } catch (error) {
     console.error("Unable to create Shopify customer address:", error);
     failed = true;
   }
+
   finish(failed ? "failed" : "created");
 }
 
@@ -138,31 +153,41 @@ export async function updateCustomerAddress(formData: FormData): Promise<void> {
   try {
     const owned = await getOwnedAddressIds(session.accessToken);
     if (!owned.ids.has(addressId)) {
-      finish("failed");
-    }
+      failed = true;
+    } else {
+      const result = await customerAccountFetch<AddressMutationResponse>(
+        UPDATE_CUSTOMER_ADDRESS_MUTATION,
+        session.accessToken,
+        {
+          addressId,
+          address,
+          defaultAddress:
+            formData.get("defaultAddress") === "on" ? true : undefined,
+        }
+      );
 
-    const result = await customerAccountFetch<AddressMutationResponse>(
-      UPDATE_CUSTOMER_ADDRESS_MUTATION,
-      session.accessToken,
-      {
-        addressId,
-        address,
-        defaultAddress: formData.get("defaultAddress") === "on" ? true : undefined,
+      failed =
+        !result.customerAddressUpdate?.customerAddress ||
+        result.customerAddressUpdate.userErrors.length > 0;
+
+      if (failed) {
+        console.error(
+          "Shopify address update rejected:",
+          result.customerAddressUpdate?.userErrors
+        );
       }
-    );
-    failed =
-      !result.customerAddressUpdate?.customerAddress ||
-      result.customerAddressUpdate.userErrors.length > 0;
-    if (failed) console.error("Shopify address update rejected:", result.customerAddressUpdate?.userErrors);
+    }
   } catch (error) {
-    if (error instanceof Error && error.message.includes("NEXT_REDIRECT")) throw error;
     console.error("Unable to update Shopify customer address:", error);
     failed = true;
   }
+
   finish(failed ? "failed" : "updated");
 }
 
-export async function setDefaultCustomerAddress(formData: FormData): Promise<void> {
+export async function setDefaultCustomerAddress(
+  formData: FormData
+): Promise<void> {
   const session = await getCustomerSession();
   if (!session) redirect("/account?error=login_required");
 
@@ -173,27 +198,36 @@ export async function setDefaultCustomerAddress(formData: FormData): Promise<voi
   try {
     const owned = await getOwnedAddressIds(session.accessToken);
     if (!owned.ids.has(addressId)) {
-      finish("failed");
-    }
+      failed = true;
+    } else {
+      const result = await customerAccountFetch<AddressMutationResponse>(
+        UPDATE_CUSTOMER_ADDRESS_MUTATION,
+        session.accessToken,
+        { addressId, defaultAddress: true }
+      );
 
-    const result = await customerAccountFetch<AddressMutationResponse>(
-      UPDATE_CUSTOMER_ADDRESS_MUTATION,
-      session.accessToken,
-      { addressId, defaultAddress: true }
-    );
-    failed =
-      !result.customerAddressUpdate?.customerAddress ||
-      result.customerAddressUpdate.userErrors.length > 0;
-    if (failed) console.error("Shopify default address update rejected:", result.customerAddressUpdate?.userErrors);
+      failed =
+        !result.customerAddressUpdate?.customerAddress ||
+        result.customerAddressUpdate.userErrors.length > 0;
+
+      if (failed) {
+        console.error(
+          "Shopify default address update rejected:",
+          result.customerAddressUpdate?.userErrors
+        );
+      }
+    }
   } catch (error) {
-    if (error instanceof Error && error.message.includes("NEXT_REDIRECT")) throw error;
     console.error("Unable to set default Shopify address:", error);
     failed = true;
   }
+
   finish(failed ? "failed" : "default");
 }
 
-export async function deleteCustomerAddress(formData: FormData): Promise<void> {
+export async function deleteCustomerAddress(
+  formData: FormData
+): Promise<void> {
   const session = await getCustomerSession();
   if (!session) redirect("/account?error=login_required");
 
@@ -204,22 +238,29 @@ export async function deleteCustomerAddress(formData: FormData): Promise<void> {
   try {
     const owned = await getOwnedAddressIds(session.accessToken);
     if (!owned.ids.has(addressId) || owned.defaultId === addressId) {
-      finish("failed");
-    }
+      failed = true;
+    } else {
+      const result = await customerAccountFetch<AddressMutationResponse>(
+        DELETE_CUSTOMER_ADDRESS_MUTATION,
+        session.accessToken,
+        { addressId }
+      );
 
-    const result = await customerAccountFetch<AddressMutationResponse>(
-      DELETE_CUSTOMER_ADDRESS_MUTATION,
-      session.accessToken,
-      { addressId }
-    );
-    failed =
-      !result.customerAddressDelete?.deletedAddressId ||
-      result.customerAddressDelete.userErrors.length > 0;
-    if (failed) console.error("Shopify address deletion rejected:", result.customerAddressDelete?.userErrors);
+      failed =
+        !result.customerAddressDelete?.deletedAddressId ||
+        result.customerAddressDelete.userErrors.length > 0;
+
+      if (failed) {
+        console.error(
+          "Shopify address deletion rejected:",
+          result.customerAddressDelete?.userErrors
+        );
+      }
+    }
   } catch (error) {
-    if (error instanceof Error && error.message.includes("NEXT_REDIRECT")) throw error;
     console.error("Unable to delete Shopify customer address:", error);
     failed = true;
   }
+
   finish(failed ? "failed" : "deleted");
 }
