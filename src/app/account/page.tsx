@@ -68,7 +68,10 @@ function AddressFields({
       <label className={labelClass}>Last name
         <input className={fieldClass} name="lastName" required maxLength={100} autoComplete="family-name" defaultValue={address?.lastName ?? ""} />
       </label>
-      <label className={labelClass}>Company (optional)\n        <input className={fieldClass} name="company" maxLength={255} autoComplete="organization" defaultValue={address?.company ?? ""} />\n      </label>\n      <label className={labelClass}>Address line 1
+      <label className={labelClass}>Company (optional)
+        <input className={fieldClass} name="company" maxLength={255} autoComplete="organization" defaultValue={address?.company ?? ""} />
+      </label>
+      <label className={labelClass}>Address line 1
         <input className={fieldClass} name="address1" required maxLength={255} autoComplete="address-line1" defaultValue={address?.address1 ?? ""} />
       </label>
       <label className={labelClass}>Address line 2
