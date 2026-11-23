@@ -43,7 +43,6 @@ const addressMessages: Record<string, { message: string; isError: boolean }> = {
 
 function AddressFields({
   address,
-  prefix,
 }: {
   address?: {
     firstName: string | null;
@@ -56,7 +55,6 @@ function AddressFields({
     countryCode: string | null;
     phoneNumber: string | null;
   };
-  prefix: string;
 }) {
   const fieldClass = "h-11 w-full rounded-lg border border-neutral-300 px-3 text-sm font-normal outline-none transition focus:border-neutral-950";
   const labelClass = "grid gap-1.5 text-xs font-medium text-neutral-600";
@@ -177,7 +175,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
                   <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wider text-neutral-700">Edit address</summary>
                   <form action={updateCustomerAddress} className="mt-4 grid gap-3 sm:grid-cols-2">
                     <input type="hidden" name="addressId" value={savedAddress.id} />
-                    <AddressFields address={savedAddress} prefix={savedAddress.id} />
+                    <AddressFields address={savedAddress} />
                     <label className="flex items-center gap-2 text-xs text-neutral-600 sm:col-span-2">
                       <input type="checkbox" name="defaultAddress" defaultChecked={savedAddress.isDefault} />
                       Set as default address
@@ -209,7 +207,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             <h3 className="mt-2 text-xl font-semibold">Add a new address</h3>
             <p className="mt-2 text-sm text-neutral-500">Save another delivery destination to your Shopify account.</p>
             <form action={createCustomerAddress} className="mt-6 grid gap-4 sm:grid-cols-2">
-              <AddressFields prefix="new" />
+              <AddressFields />
               <label className="flex items-center gap-2 text-xs text-neutral-600 sm:col-span-2">
                 <input type="checkbox" name="defaultAddress" />
                 Make this my default address
