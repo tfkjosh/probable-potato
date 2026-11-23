@@ -5,6 +5,7 @@ import { getCustomer } from "@/lib/shopify/customer/actions/get-customer";
 import { getCustomerOrders } from "@/lib/shopify/customer/actions/get-customer-orders";
 import { getCustomerAddresses } from "@/lib/shopify/customer/actions/get-customer-addresses";
 import { updateCustomerProfile } from "@/lib/shopify/customer/actions/update-customer-profile";
+import { updateCustomerEmailMarketing } from "@/lib/shopify/customer/actions/update-customer-marketing";
 import {
   createCustomerAddress,
   deleteCustomerAddress,
@@ -15,7 +16,7 @@ import {
 export const dynamic = "force-dynamic";
 
 interface AccountPageProps {
-  searchParams: Promise<{ error?: string; profile?: string; address?: string }>;
+  searchParams: Promise<{ error?: string; profile?: string; address?: string; marketing?: string }>;
 }
 
 const authErrors: Record<string, string> = {
@@ -32,7 +33,7 @@ const profileMessages: Record<string, { message: string; isError: boolean }> = {
   failed: { message: "Shopify couldn't update your profile. Check your account API permissions and try again.", isError: true },
 };
 
-const addressMessages: Record<string, { message: string; isError: boolean }> = {
+const marketingMessages: Record<string, { message: string; isError: boolean }> = {\n  subscribed: { message: "You are now subscribed to email updates.", isError: false },\n  unsubscribed: { message: "You have been unsubscribed from email updates.", isError: false },\n  failed: { message: "Shopify could not update your email preferences. Please try again.", isError: true },\n};\n\nconst addressMessages: Record<string, { message: string; isError: boolean }> = {
   created: { message: "Your new address has been saved.", isError: false },
   updated: { message: "Your address has been updated.", isError: false },
   deleted: { message: "Your address has been deleted.", isError: false },
@@ -97,7 +98,7 @@ function AddressFields({
 }
 
 export default async function AccountPage({ searchParams }: AccountPageProps) {
-  const { error, profile, address: addressStatus } = await searchParams;
+  const { error, profile, address: addressStatus, marketing } = await searchParams;
   const customer = await getCustomer();
 
   if (!customer) {
@@ -117,7 +118,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
 
   const [orders, addresses] = await Promise.all([getCustomerOrders(), getCustomerAddresses()]);
   const profileMessage = profile ? profileMessages[profile] : undefined;
-  const addressMessage = addressStatus ? addressMessages[addressStatus] : undefined;
+  const addressMessage = addressStatus ? addressMessages[addressStatus] : undefined;\n  const marketingMessage = marketing ? marketingMessages[marketing] : undefined;
 
   return (
     <>
@@ -149,6 +150,28 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
               <input name="lastName" type="text" autoComplete="family-name" maxLength={100} defaultValue={customer.lastName ?? ""} className="h-12 rounded-lg border border-neutral-300 px-4 font-normal outline-none transition focus:border-neutral-950" />
             </label>
             <div className="sm:col-span-2"><button type="submit" className="inline-flex h-11 items-center justify-center rounded-full bg-neutral-950 px-6 text-sm font-medium text-white transition hover:bg-neutral-700">Save changes</button></div>
+          </form>
+        </section>
+
+
+        <section className="mt-8 rounded-2xl border border-neutral-200 p-6 sm:p-8">
+          <div className="flex flex-wrap items-start justify-between gap-5">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">Communication preferences</p>
+              <h2 className="mt-2 text-xl font-semibold">Email updates</h2>
+              <p className="mt-2 max-w-xl text-sm text-neutral-500">Choose whether you receive promotional emails and product updates from the store. Order and account service emails are not affected.</p>
+            </div>
+            <span className="rounded-full bg-neutral-100 px-3 py-1.5 text-xs font-semibold text-neutral-700">
+              {customer.emailAddress?.marketingState === "SUBSCRIBED" ? "Subscribed" : customer.emailAddress?.marketingState === "PENDING" ? "Confirmation pending" : customer.emailAddress?.marketingState === "UNSUBSCRIBED" ? "Unsubscribed" : "Not subscribed"}
+            </span>
+          </div>
+          {marketingMessage && <p role={marketingMessage.isError ? "alert" : "status"} className={`mt-5 rounded-lg px-4 py-3 text-sm ${marketingMessage.isError ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-800"}`}>{marketingMessage.message}</p>}
+          <p className="mt-4 text-sm text-neutral-600">{customer.emailAddress?.emailAddress ?? "No email address on file"}</p>
+          <form action={updateCustomerEmailMarketing} className="mt-5">
+            <input type="hidden" name="intent" value={customer.emailAddress?.marketingState === "SUBSCRIBED" || customer.emailAddress?.marketingState === "PENDING" ? "unsubscribe" : "subscribe"} />
+            <button type="submit" className="rounded-full border border-neutral-300 px-5 py-2.5 text-sm font-medium transition hover:bg-neutral-100">
+              {customer.emailAddress?.marketingState === "SUBSCRIBED" || customer.emailAddress?.marketingState === "PENDING" ? "Unsubscribe from marketing" : "Subscribe to email updates"}
+            </button>
           </form>
         </section>
 
