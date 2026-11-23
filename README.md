@@ -63,13 +63,18 @@ The private token and full Shopify cart ID (which includes a secret key) remain 
 - Server-managed cart session with an HttpOnly cookie
 - Cart page with quantity updates, item removal, and Shopify checkout handoff
 
+## Community foundation
+
+The first community database migration is in `supabase/migrations/`. It creates Supabase Auth-backed public profiles and comments for Shopify products and editorial posts, with explicit PostgreSQL grants and Row Level Security policies.
+
+See [supabase/README.md](supabase/README.md) for project setup and migration instructions. The migration has not yet been applied to a live Supabase project or tested with real users.
+
 ## Next milestones
 
-- Product variant selection and add-to-cart interactions
-- Cart drawer and checkout handoff
-- Collection browsing, filtering, and search
-- Customer account authentication
-- Deployment and production environment configuration
+- Configure Supabase Auth and integrate cookie-based SSR sessions
+- Verify profile/comment RLS with anonymous users and multiple signed-in users
+- Add product and post comment interfaces
+- Add likes and follows after the permission boundary is verified
 
 ## Available scripts
 
