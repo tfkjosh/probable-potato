@@ -64,31 +64,29 @@ export async function updateCustomerEmailMarketing(
       session.accessToken
     );
 
-    if (!customerResult.customer?.emailAddress?.emailAddress) {
-      redirect("/account?marketing=failed");
-    }
+    if (customerResult.customer?.emailAddress?.emailAddress) {
+      const mutation =
+        intent === "subscribe"
+          ? SUBSCRIBE_CUSTOMER_EMAIL_MARKETING_MUTATION
+          : UNSUBSCRIBE_CUSTOMER_EMAIL_MARKETING_MUTATION;
 
-    const mutation =
-      intent === "subscribe"
-        ? SUBSCRIBE_CUSTOMER_EMAIL_MARKETING_MUTATION
-        : UNSUBSCRIBE_CUSTOMER_EMAIL_MARKETING_MUTATION;
+      const result = await customerAccountFetch<MarketingMutationResponse>(
+        mutation,
+        session.accessToken
+      );
 
-    const result = await customerAccountFetch<MarketingMutationResponse>(
-      mutation,
-      session.accessToken
-    );
+      const payload =
+        intent === "subscribe"
+          ? result.customerEmailMarketingSubscribe
+          : result.customerEmailMarketingUnsubscribe;
 
-    const payload =
-      intent === "subscribe"
-        ? result.customerEmailMarketingSubscribe
-        : result.customerEmailMarketingUnsubscribe;
+      succeeded =
+        Boolean(payload?.emailAddress?.emailAddress) &&
+        (payload?.userErrors.length ?? 1) === 0;
 
-    succeeded =
-      Boolean(payload?.emailAddress?.emailAddress) &&
-      (payload?.userErrors.length ?? 1) === 0;
-
-    if (!succeeded) {
-      console.error("Shopify customer email preference update rejected:", payload?.userErrors);
+      if (!succeeded) {
+        console.error("Shopify customer email preference update rejected:", payload?.userErrors);
+      }
     }
   } catch (error) {
     console.error("Unable to update Shopify customer email preferences:", error);
