@@ -70,7 +70,7 @@ create policy "Users can update their own community profile"
   using ((select auth.uid()) = id)
   with check ((select auth.uid()) = id);
 
-create policy "Published community comments are publicly readable"
+create policy "Community comments are publicly readable"
   on public.community_comments
   for select
   to anon, authenticated
@@ -142,14 +142,26 @@ begin
     60
   );
 
-  insert into public.community_profiles (id, username, display_name, avatar_url)
-  values (
-    new.id,
-    requested_username,
-    requested_display_name,
-    nullif(new.raw_user_meta_data ->> 'avatar_url', '')
-  )
-  on conflict (id) do nothing;
+  begin
+    insert into public.community_profiles (id, username, display_name, avatar_url)
+    values (
+      new.id,
+      requested_username,
+      requested_display_name,
+      nullif(new.raw_user_meta_data ->> 'avatar_url', '')
+    )
+    on conflict (id) do nothing;
+  exception
+    when unique_violation then
+      -- A duplicate requested username must never block account creation.
+      insert into public.community_profiles (id, display_name, avatar_url)
+      values (
+        new.id,
+        requested_display_name,
+        nullif(new.raw_user_meta_data ->> 'avatar_url', '')
+      )
+      on conflict (id) do nothing;
+  end;
 
   return new;
 end;
