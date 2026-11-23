@@ -7,13 +7,14 @@ import type { ShopifyCustomerAddress } from "../types";
 
 interface GetCustomerAddressesResponse {
   customer: {
+    defaultAddress: { id: string } | null;
     addresses: {
-      nodes: ShopifyCustomerAddress[];
+      nodes: Omit<ShopifyCustomerAddress, "isDefault">[];
     };
   } | null;
 }
 
-export async function getCustomerAddresses() {
+export async function getCustomerAddresses(): Promise<ShopifyCustomerAddress[]> {
   const session = await getCustomerSession();
   if (!session) return [];
 
@@ -22,5 +23,10 @@ export async function getCustomerAddresses() {
     session.accessToken
   );
 
-  return result.customer?.addresses.nodes ?? [];
+  const defaultAddressId = result.customer?.defaultAddress?.id;
+
+  return (result.customer?.addresses.nodes ?? []).map((address) => ({
+    ...address,
+    isDefault: address.id === defaultAddressId,
+  }));
 }
