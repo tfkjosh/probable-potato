@@ -158,10 +158,19 @@ export interface ShopifyCustomerReturn {
   };
 }
 
+export interface ShopifyCustomerRefund {
+  id: string;
+  createdAt: string | null;
+  updatedAt: string;
+  returnName: string | null;
+  totalRefunded: ShopifyMoney;
+}
+
 export interface ShopifyCustomerOrderReturns {
   id: string;
   name: string;
   createdAt: string;
+  refunds: ShopifyCustomerRefund[];
   returnInformation: {
     nonReturnableSummary: {
       nonReturnableReasons: string[];
