@@ -40,9 +40,15 @@ export async function updateCustomerProfile(formData: FormData): Promise<void> {
   const normalizedFirstName = firstName.trim();
   const normalizedLastName = lastName.trim();
 
-  if (!normalizedFirstName || normalizedFirstName.length > 100 || normalizedLastName.length > 100) {
+  if (
+    !normalizedFirstName ||
+    normalizedFirstName.length > 100 ||
+    normalizedLastName.length > 100
+  ) {
     redirect("/account?profile=invalid");
   }
+
+  let updateFailed = false;
 
   try {
     const result = await customerAccountFetch<UpdateCustomerProfileResponse>(
@@ -56,16 +62,22 @@ export async function updateCustomerProfile(formData: FormData): Promise<void> {
       }
     );
 
-    if (result.customerUpdate.userErrors.length || !result.customerUpdate.customer) {
-      console.error("Shopify customer profile update rejected:", result.customerUpdate.userErrors);
-      redirect("/account?profile=failed");
+    updateFailed =
+      result.customerUpdate.userErrors.length > 0 ||
+      !result.customerUpdate.customer;
+
+    if (updateFailed) {
+      console.error(
+        "Shopify customer profile update rejected:",
+        result.customerUpdate.userErrors
+      );
     }
   } catch (error) {
-    if (error instanceof Error && error.message.includes("NEXT_REDIRECT")) {
-      throw error;
-    }
-
     console.error("Unable to update Shopify customer profile:", error);
+    updateFailed = true;
+  }
+
+  if (updateFailed) {
     redirect("/account?profile=failed");
   }
 
