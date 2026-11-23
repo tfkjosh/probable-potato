@@ -51,7 +51,7 @@ function AddressFields({
     address1: string | null;
     address2: string | null;
     city: string | null;
-    provinceCode: string | null;
+    zoneCode: string | null;
     zip: string | null;
     countryCode: string | null;
     phoneNumber: string | null;
@@ -78,7 +78,7 @@ function AddressFields({
         <input className={fieldClass} name="city" required maxLength={100} autoComplete="address-level2" defaultValue={address?.city ?? ""} />
       </label>
       <label className={labelClass}>State / Province code
-        <input className={fieldClass} name="zoneCode" maxLength={20} autoComplete="address-level1" placeholder="e.g. TX" defaultValue={address?.provinceCode ?? ""} />
+        <input className={fieldClass} name="zoneCode" maxLength={20} autoComplete="address-level1" placeholder="e.g. TX" defaultValue={address?.zoneCode ?? ""} />
       </label>
       <label className={labelClass}>ZIP / Postal code
         <input className={fieldClass} name="zip" required maxLength={32} autoComplete="postal-code" defaultValue={address?.zip ?? ""} />
@@ -168,7 +168,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
                   {savedAddress.isDefault && <span className="rounded-full bg-neutral-100 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-neutral-700">Default</span>}
                 </div>
                 <p className="text-sm leading-6 text-neutral-600">
-                  {[savedAddress.address1, savedAddress.address2, savedAddress.city, savedAddress.province, savedAddress.zip, savedAddress.country].filter(Boolean).join(", ")}
+                  {[savedAddress.company, savedAddress.address1, savedAddress.address2, savedAddress.city, savedAddress.province, savedAddress.zip, savedAddress.country].filter(Boolean).join(", ")}
                 </p>
                 {savedAddress.phoneNumber && <p className="mt-2 text-xs text-neutral-500">{savedAddress.phoneNumber}</p>}
 
