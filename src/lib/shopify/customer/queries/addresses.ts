@@ -9,11 +9,12 @@ export const GET_CUSTOMER_ADDRESSES_QUERY = `#graphql
           id
           firstName
           lastName
+          company
           address1
           address2
           city
           province
-          provinceCode: zoneCode
+          zoneCode
           zip
           country
           countryCode
