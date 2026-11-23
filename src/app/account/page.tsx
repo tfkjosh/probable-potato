@@ -4,11 +4,12 @@ import { StoreHeader } from "@/components/storefront/store-header";
 import { getCustomer } from "@/lib/shopify/customer/actions/get-customer";
 import { getCustomerOrders } from "@/lib/shopify/customer/actions/get-customer-orders";
 import { getCustomerAddresses } from "@/lib/shopify/customer/actions/get-customer-addresses";
+import { updateCustomerProfile } from "@/lib/shopify/customer/actions/update-customer-profile";
 
 export const dynamic = "force-dynamic";
 
 interface AccountPageProps {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; profile?: string }>;
 }
 
 const authErrors: Record<string, string> = {
@@ -16,10 +17,17 @@ const authErrors: Record<string, string> = {
   login_cancelled: "Sign-in was cancelled. You can try again.",
   invalid_callback: "The sign-in response could not be verified. Please try again.",
   token_exchange: "Shopify could not complete sign-in. Please try again.",
+  login_required: "Please sign in before updating your profile.",
+};
+
+const profileMessages: Record<string, { message: string; isError: boolean }> = {
+  updated: { message: "Your profile details have been updated.", isError: false },
+  invalid: { message: "Enter a first name and keep each name under 100 characters.", isError: true },
+  failed: { message: "Shopify couldn't update your profile. Check your account API permissions and try again.", isError: true },
 };
 
 export default async function AccountPage({ searchParams }: AccountPageProps) {
-  const { error } = await searchParams;
+  const { error, profile } = await searchParams;
   const customer = await getCustomer();
 
   if (!customer) {
@@ -57,6 +65,8 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
     getCustomerAddresses(),
   ]);
 
+  const profileMessage = profile ? profileMessages[profile] : undefined;
+
   return (
     <>
       <StoreHeader />
@@ -82,6 +92,65 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             </button>
           </form>
         </div>
+
+        <section className="mt-12 rounded-2xl border border-neutral-200 p-6 sm:p-8">
+          <div className="mb-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
+              Personal details
+            </p>
+            <h2 className="mt-2 text-xl font-semibold">Your profile</h2>
+            <p className="mt-2 text-sm text-neutral-500">
+              Update the name associated with your Shopify customer account.
+            </p>
+          </div>
+
+          {profileMessage && (
+            <p
+              role={profileMessage.isError ? "alert" : "status"}
+              className={`mb-5 rounded-lg px-4 py-3 text-sm ${
+                profileMessage.isError
+                  ? "bg-red-50 text-red-700"
+                  : "bg-emerald-50 text-emerald-800"
+              }`}
+            >
+              {profileMessage.message}
+            </p>
+          )}
+
+          <form action={updateCustomerProfile} className="grid gap-5 sm:grid-cols-2">
+            <label className="grid gap-2 text-sm font-medium text-neutral-700">
+              First name
+              <input
+                name="firstName"
+                type="text"
+                autoComplete="given-name"
+                required
+                maxLength={100}
+                defaultValue={customer.firstName ?? ""}
+                className="h-12 rounded-lg border border-neutral-300 px-4 font-normal outline-none transition focus:border-neutral-950"
+              />
+            </label>
+            <label className="grid gap-2 text-sm font-medium text-neutral-700">
+              Last name
+              <input
+                name="lastName"
+                type="text"
+                autoComplete="family-name"
+                maxLength={100}
+                defaultValue={customer.lastName ?? ""}
+                className="h-12 rounded-lg border border-neutral-300 px-4 font-normal outline-none transition focus:border-neutral-950"
+              />
+            </label>
+            <div className="sm:col-span-2">
+              <button
+                type="submit"
+                className="inline-flex h-11 items-center justify-center rounded-full bg-neutral-950 px-6 text-sm font-medium text-white transition hover:bg-neutral-700"
+              >
+                Save changes
+              </button>
+            </div>
+          </form>
+        </section>
 
         <section className="mt-14">
           <div className="flex flex-wrap items-baseline justify-between gap-3">

@@ -6,7 +6,7 @@ export const customerAccountConfig = {
   redirectUri: process.env.SHOPIFY_CUSTOMER_ACCOUNT_API_REDIRECT_URI!,
   scopes:
     process.env.SHOPIFY_CUSTOMER_ACCOUNT_API_SCOPES ??
-    "openid email customer-account-api:full",
+    "openid email customer-account-api:full customer_write_customers",
 };
 
 export function validateCustomerAccountConfig() {
