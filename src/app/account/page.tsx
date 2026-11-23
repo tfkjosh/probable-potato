@@ -176,7 +176,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           <p className="mt-4 text-sm text-neutral-600">{customer.emailAddress?.emailAddress ?? "No email address on file"}</p>
           <form action={updateCustomerEmailMarketing} className="mt-5">
             <input type="hidden" name="intent" value={customer.emailAddress?.marketingState === "SUBSCRIBED" || customer.emailAddress?.marketingState === "PENDING" ? "unsubscribe" : "subscribe"} />
-            <button type="submit" className="rounded-full border border-neutral-300 px-5 py-2.5 text-sm font-medium transition hover:bg-neutral-100">
+            <button type="submit" disabled={!customer.emailAddress?.emailAddress} className="rounded-full border border-neutral-300 px-5 py-2.5 text-sm font-medium transition hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-50">
               {customer.emailAddress?.marketingState === "SUBSCRIBED" || customer.emailAddress?.marketingState === "PENDING" ? "Unsubscribe from marketing" : "Subscribe to email updates"}
             </button>
           </form>
