@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { AccountNavLink } from "@/components/storefront/account-nav-link";
+
 const navigation = [
   { label: "Shop", href: "/#featured-products" },
   { label: "Collections", href: "/#collections" },
@@ -37,12 +39,7 @@ export function StoreHeader() {
           >
             Cart
           </Link>
-          <Link
-            href="/account"
-            className="rounded-full border border-neutral-300 px-4 py-2 text-xs font-medium text-neutral-800 transition-colors hover:border-neutral-950 hover:bg-neutral-950 hover:text-white"
-          >
-            Account
-          </Link>
+          <AccountNavLink />
         </div>
       </div>
     </header>
