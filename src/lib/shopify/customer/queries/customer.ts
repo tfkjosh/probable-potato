@@ -9,6 +9,7 @@ export const GET_CUSTOMER_QUERY = `#graphql
 
       emailAddress {
         emailAddress
+        marketingState
       }
 
       phoneNumber {
