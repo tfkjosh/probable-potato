@@ -221,7 +221,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           </section>
         </section>
 
-        <section className="mt-14">
+        <section id="orders" className="mt-14">
           <div className="flex flex-wrap items-baseline justify-between gap-3">
             <h2 className="text-xl font-semibold">Recent orders</h2>
             <p className="text-xs text-neutral-500">Showing your latest {orders.length} orders</p>
