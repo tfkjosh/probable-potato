@@ -1,4 +1,3 @@
-
 export interface ShopifyCustomer {
   id: string;
   firstName: string | null;
@@ -20,9 +19,12 @@ export interface ShopifyCustomerAddress {
   address2: string | null;
   city: string | null;
   province: string | null;
+  provinceCode: string | null;
   zip: string | null;
   country: string | null;
+  countryCode: string | null;
   phoneNumber: string | null;
+  isDefault: boolean;
 }
 
 export interface ShopifyCustomerOrder {
