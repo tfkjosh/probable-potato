@@ -1,7 +1,9 @@
-
 export const GET_CUSTOMER_ADDRESSES_QUERY = `#graphql
   query GetCustomerAddresses {
     customer {
+      defaultAddress {
+        id
+      }
       addresses(first: 20) {
         nodes {
           id
@@ -11,8 +13,10 @@ export const GET_CUSTOMER_ADDRESSES_QUERY = `#graphql
           address2
           city
           province
+          provinceCode: zoneCode
           zip
           country
+          countryCode
           phoneNumber
         }
       }
