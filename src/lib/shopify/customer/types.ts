@@ -100,6 +100,93 @@ export interface ShopifyCustomerOrderDetail {
   };
 }
 
+export interface ShopifyReturnReasonDefinition {
+  id: string;
+  name: string;
+  handle: string;
+  deleted: boolean;
+}
+
+export interface ShopifyReturnableLineItem {
+  quantity: number;
+  lineItem: {
+    id: string;
+    name: string;
+    title: string;
+    variantTitle: string | null;
+    image: {
+      url: string;
+      altText: string | null;
+    } | null;
+    currentTotalPrice: ShopifyMoney | null;
+    suggestedReturnReasonDefinitions: {
+      nodes: ShopifyReturnReasonDefinition[];
+    } | null;
+  };
+}
+
+export interface ShopifyNonReturnableLineItem {
+  quantity: number;
+  lineItem: {
+    id: string;
+    name: string;
+    title: string;
+  };
+}
+
+export interface ShopifyCustomerReturn {
+  id: string;
+  name: string;
+  status: "CANCELED" | "CLOSED" | "DECLINED" | "OPEN" | "REQUESTED" | string;
+  createdAt: string;
+  updatedAt: string;
+  closedAt: string | null;
+  returnLineItems: {
+    nodes: Array<{
+      id: string;
+      quantity: number;
+      lineItem: {
+        id: string;
+        name: string;
+        title: string;
+      };
+      returnReasonDefinition: {
+        name: string;
+        handle: string;
+      } | null;
+    }>;
+  };
+}
+
+export interface ShopifyCustomerRefund {
+  id: string;
+  createdAt: string | null;
+  updatedAt: string;
+  returnName: string | null;
+  totalRefunded: ShopifyMoney;
+}
+
+export interface ShopifyCustomerOrderReturns {
+  id: string;
+  name: string;
+  createdAt: string;
+  refunds: ShopifyCustomerRefund[];
+  returnInformation: {
+    nonReturnableSummary: {
+      nonReturnableReasons: string[];
+    } | null;
+    returnableLineItems: {
+      nodes: ShopifyReturnableLineItem[];
+    };
+    nonReturnableLineItems: {
+      nodes: ShopifyNonReturnableLineItem[];
+    };
+  };
+  returns: {
+    nodes: ShopifyCustomerReturn[];
+  };
+}
+
 export interface CustomerAccountSession {
   accessToken: string;
   refreshToken?: string;
