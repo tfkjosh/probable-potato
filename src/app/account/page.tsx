@@ -138,7 +138,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             <p className="mt-2 text-neutral-600">{customer.emailAddress?.emailAddress ?? "Your Shopify account"}</p>
           </div>
           <form action="/api/auth/shopify/logout" method="post">
-            <button type="submit" disabled={!customer.emailAddress?.emailAddress} className="rounded-full border border-neutral-300 px-5 py-2.5 text-sm font-medium transition hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-50">Sign out</button>
+            <button type="submit" className="rounded-full border border-neutral-300 px-5 py-2.5 text-sm font-medium transition hover:bg-neutral-100">Sign out</button>
           </form>
         </div>
 
