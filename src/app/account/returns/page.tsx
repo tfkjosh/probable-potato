@@ -8,6 +8,7 @@ import {
   requestCustomerReturn,
 } from "@/lib/shopify/customer/actions/manage-customer-returns";
 import type {
+  ShopifyCustomerRefund,
   ShopifyCustomerReturn,
   ShopifyNonReturnableLineItem,
   ShopifyReturnableLineItem,
@@ -45,6 +46,29 @@ const statusDescriptions: Record<string, string> = {
 
 function readableStatus(status: string) {
   return status.toLowerCase().replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function RefundHistory({ refunds }: { refunds: ShopifyCustomerRefund[] }) {
+  if (!refunds.length) return null;
+
+  return (
+    <section className="mt-8 rounded-2xl border border-neutral-200 p-5">
+      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">Payment updates</p>
+      <h2 className="mt-2 text-xl font-semibold">Refund history</h2>
+      <div className="mt-4 divide-y divide-neutral-100">
+        {refunds.map((refund) => (
+          <div key={refund.id} className="flex flex-wrap items-center justify-between gap-3 py-3">
+            <div>
+              <p className="font-medium">{refund.returnName ? `Refund for ${refund.returnName}` : "Order refund"}</p>
+              <p className="mt-1 text-xs text-neutral-500">{refund.createdAt ? `Created ${new Date(refund.createdAt).toLocaleDateString()}` : `Updated ${new Date(refund.updatedAt).toLocaleDateString()}`}</p>
+            </div>
+            <p className="font-semibold">{new Intl.NumberFormat(undefined, { style: "currency", currency: refund.totalRefunded.currencyCode }).format(Number(refund.totalRefunded.amount))}</p>
+          </div>
+        ))}
+      </div>
+      <p className="mt-3 text-xs text-neutral-500">This shows refund records Shopify has attached to the order. Your payment provider may take additional time to post funds.</p>
+    </section>
+  );
 }
 
 function ReturnHistory({ returns }: { returns: ShopifyCustomerReturn[] }) {
@@ -236,6 +260,7 @@ export default async function CustomerReturnsPage({ searchParams }: ReturnsPageP
         {result === "requested" && <p role="status" className="mt-6 rounded-xl bg-emerald-50 p-4 text-sm text-emerald-800">Your return request was sent to the store. You can follow its status below.</p>}
         {error && <p role="alert" className="mt-6 rounded-xl bg-red-50 p-4 text-sm text-red-700">{errorMessages[error] ?? "Something went wrong. Please try again."}</p>}
 
+        <RefundHistory refunds={order.refunds} />
         <ReturnHistory returns={order.returns.nodes} />
 
         <section className="mt-10">
