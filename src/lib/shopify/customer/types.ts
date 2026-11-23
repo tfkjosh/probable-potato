@@ -5,6 +5,7 @@ export interface ShopifyCustomer {
   displayName: string;
   emailAddress: {
     emailAddress: string;
+    marketingState: "INVALID" | "NOT_SUBSCRIBED" | "PENDING" | "REDACTED" | "SUBSCRIBED" | "UNSUBSCRIBED";
   } | null;
   phoneNumber: {
     phoneNumber: string;
