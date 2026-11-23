@@ -82,7 +82,10 @@ export default async function CustomerOrderDetailPage({
     <>
       <StoreHeader />
       <main className="mx-auto max-w-5xl px-6 py-14">
-        <Link href="/account#orders" className="text-sm text-neutral-500 underline underline-offset-4">← Back to orders</Link>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <Link href="/account#orders" className="text-sm text-neutral-500 underline underline-offset-4">← Back to orders</Link>
+          <Link href={`/account/returns?id=${encodeURIComponent(id ?? "")}`} className="rounded-full border border-neutral-300 px-5 py-2.5 text-sm font-medium transition hover:bg-neutral-100">Request a return</Link>
+        </div>
 
         <div className="mt-8 flex flex-wrap items-start justify-between gap-5">
           <div>
