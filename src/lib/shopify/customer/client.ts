@@ -43,7 +43,8 @@ async function getCustomerGraphQLEndpoint(): Promise<string> {
 
 export async function customerAccountFetch<T>(
   query: string,
-  accessToken: string
+  accessToken: string,
+  variables?: Record<string, unknown>
 ): Promise<T> {
   const endpoint = await getCustomerGraphQLEndpoint();
 
@@ -56,7 +57,7 @@ export async function customerAccountFetch<T>(
       Origin: new URL(customerAccountConfig.redirectUri).origin,
       "User-Agent": "ProbablePotatoStorefront/1.0",
     },
-    body: JSON.stringify({ query }),
+    body: JSON.stringify({ query, variables }),
     cache: "no-store",
   });
 
