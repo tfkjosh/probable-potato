@@ -33,7 +33,13 @@ const profileMessages: Record<string, { message: string; isError: boolean }> = {
   failed: { message: "Shopify couldn't update your profile. Check your account API permissions and try again.", isError: true },
 };
 
-const marketingMessages: Record<string, { message: string; isError: boolean }> = {\n  subscribed: { message: "You are now subscribed to email updates.", isError: false },\n  unsubscribed: { message: "You have been unsubscribed from email updates.", isError: false },\n  failed: { message: "Shopify could not update your email preferences. Please try again.", isError: true },\n};\n\nconst addressMessages: Record<string, { message: string; isError: boolean }> = {
+const marketingMessages: Record<string, { message: string; isError: boolean }> = {
+  subscribed: { message: "You are now subscribed to email updates.", isError: false },
+  unsubscribed: { message: "You have been unsubscribed from email updates.", isError: false },
+  failed: { message: "Shopify could not update your email preferences. Please try again.", isError: true },
+};
+
+const addressMessages: Record<string, { message: string; isError: boolean }> = {
   created: { message: "Your new address has been saved.", isError: false },
   updated: { message: "Your address has been updated.", isError: false },
   deleted: { message: "Your address has been deleted.", isError: false },
@@ -118,7 +124,8 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
 
   const [orders, addresses] = await Promise.all([getCustomerOrders(), getCustomerAddresses()]);
   const profileMessage = profile ? profileMessages[profile] : undefined;
-  const addressMessage = addressStatus ? addressMessages[addressStatus] : undefined;\n  const marketingMessage = marketing ? marketingMessages[marketing] : undefined;
+  const addressMessage = addressStatus ? addressMessages[addressStatus] : undefined;
+  const marketingMessage = marketing ? marketingMessages[marketing] : undefined;
 
   return (
     <>
@@ -131,7 +138,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             <p className="mt-2 text-neutral-600">{customer.emailAddress?.emailAddress ?? "Your Shopify account"}</p>
           </div>
           <form action="/api/auth/shopify/logout" method="post">
-            <button type="submit" className="rounded-full border border-neutral-300 px-5 py-2.5 text-sm font-medium transition hover:bg-neutral-100">Sign out</button>
+            <button type="submit" disabled={!customer.emailAddress?.emailAddress} className="rounded-full border border-neutral-300 px-5 py-2.5 text-sm font-medium transition hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-50">Sign out</button>
           </form>
         </div>
 
