@@ -1,4 +1,3 @@
-
 export const GET_COLLECTIONS_QUERY = `#graphql
   query GetCollections(
     $first: Int!
@@ -6,12 +5,7 @@ export const GET_COLLECTIONS_QUERY = `#graphql
     $sortKey: CollectionSortKeys
     $reverse: Boolean
   ) {
-    collections(
-      first: $first
-      after: $after
-      sortKey: $sortKey
-      reverse: $reverse
-    ) {
+    collections(first: $first, after: $after, sortKey: $sortKey, reverse: $reverse) {
       edges {
         cursor
         node {
@@ -19,28 +13,24 @@ export const GET_COLLECTIONS_QUERY = `#graphql
           title
           handle
           description
-
           image {
             url
             altText
             width
             height
           }
-
           products(first: 4) {
             nodes {
               id
               title
               handle
               availableForSale
-
               featuredImage {
                 url
                 altText
                 width
                 height
               }
-
               priceRange {
                 minVariantPrice {
                   amount
@@ -51,7 +41,6 @@ export const GET_COLLECTIONS_QUERY = `#graphql
           }
         }
       }
-
       pageInfo {
         hasNextPage
         hasPreviousPage
@@ -75,20 +64,13 @@ export const GET_COLLECTION_QUERY = `#graphql
       title
       handle
       description
-
       image {
         url
         altText
         width
         height
       }
-
-      products(
-        first: $first
-        after: $after
-        sortKey: $sortKey
-        reverse: $reverse
-      ) {
+      products(first: $first, after: $after, sortKey: $sortKey, reverse: $reverse) {
         edges {
           cursor
           node {
@@ -97,14 +79,21 @@ export const GET_COLLECTION_QUERY = `#graphql
             handle
             description
             availableForSale
-
             featuredImage {
               url
               altText
               width
               height
             }
-
+            images(first: 2) {
+              nodes {
+                id
+                url
+                altText
+                width
+                height
+              }
+            }
             priceRange {
               minVariantPrice {
                 amount
@@ -117,7 +106,6 @@ export const GET_COLLECTION_QUERY = `#graphql
             }
           }
         }
-
         pageInfo {
           hasNextPage
           hasPreviousPage
