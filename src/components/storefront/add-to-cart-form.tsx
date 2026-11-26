@@ -102,12 +102,12 @@ export function AddToCartForm({
     <div className="mt-8 space-y-7">
       {selectableOptions.map((option) => (
         <fieldset key={option.name}>
+          <legend className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-800">
+            {option.name}
+          </legend>
           <div className="mb-3 flex items-center justify-between gap-4">
-            <legend className="text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-800">
-              {option.name}
-            </legend>
             <span className="text-[10px] uppercase tracking-[0.12em] text-neutral-500">
-              {selectedOptions[option.name] ?? "Select"}
+              Selected: {selectedOptions[option.name] ?? "Select"}
             </span>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -164,7 +164,7 @@ export function AddToCartForm({
       {selectedVariant && (
         <div className="flex items-baseline justify-between gap-4">
           <span className="text-[10px] uppercase tracking-[0.18em] text-neutral-500">
-            {selectedVariant.availableForSale ? "Ready to ship" : "Unavailable"}
+            {selectedVariant.availableForSale ? "Available to purchase" : "Unavailable"}
           </span>
           <div className="flex items-baseline gap-3">
             {selectedVariant.compareAtPrice &&
