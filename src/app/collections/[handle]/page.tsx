@@ -28,7 +28,7 @@ function getSortSettings(sort: string | undefined) {
 
 interface CollectionPageProps {
   params: Promise<{ handle: string }>;
-  searchParams: Promise<{ cursor?: string; sort?: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export async function generateMetadata({ params }: CollectionPageProps) {
@@ -38,8 +38,10 @@ export async function generateMetadata({ params }: CollectionPageProps) {
 
 export default async function CollectionPage({ params, searchParams }: CollectionPageProps) {
   const [{ handle }, query] = await Promise.all([params, searchParams]);
-  const { sortKey, reverse, selected } = getSortSettings(query.sort);
-  const cursor = typeof query.cursor === "string" && query.cursor.length <= 512 ? query.cursor : undefined;
+  const sortValue = Array.isArray(query.sort) ? query.sort[0] : query.sort;
+  const cursorValue = Array.isArray(query.cursor) ? query.cursor[0] : query.cursor;
+  const { sortKey, reverse, selected } = getSortSettings(sortValue);
+  const cursor = typeof cursorValue === "string" && cursorValue.length <= 512 ? cursorValue : undefined;
 
   let collection;
   try {
