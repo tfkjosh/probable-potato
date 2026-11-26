@@ -69,7 +69,7 @@ export default async function CustomerOrderDetailPage({
         <StoreHeader />
         <main className="mx-auto max-w-3xl px-6 py-20">
           <Link href="/account#orders" className="text-sm text-neutral-500 underline underline-offset-4">Back to your account</Link>
-          <h1 className="mt-8 text-3xl font-semibold tracking-tight">We couldn't find that order</h1>
+          <h1 className="mt-8 text-3xl font-semibold tracking-tight">We couldn&apos;t find that order</h1>
           <p className="mt-3 text-neutral-600">This order may not exist or may not belong to your signed-in account.</p>
         </main>
       </>
@@ -153,7 +153,7 @@ export default async function CustomerOrderDetailPage({
                           })}
                         </div>
                       ) : (
-                        <p className="mt-3 text-sm text-neutral-500">Tracking information isn't available yet.</p>
+                        <p className="mt-3 text-sm text-neutral-500">Tracking information isn&apos;t available yet.</p>
                       )}
                     </article>
                   ))}

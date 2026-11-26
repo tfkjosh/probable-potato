@@ -49,7 +49,9 @@ export async function getCartAction() {
   }
 
   // The full cart ID contains Shopify's secret key. Never return it to the browser.
-  const { id: _secretCartId, ...safeCart } = cart;
+  const safeCart = Object.fromEntries(
+    Object.entries(cart).filter(([key]) => key !== "id"),
+  ) as Omit<typeof cart, "id">;
   return safeCart;
 }
 

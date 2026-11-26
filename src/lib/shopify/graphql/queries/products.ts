@@ -1,4 +1,3 @@
-
 export const GET_PRODUCTS_QUERY = `#graphql
   query GetProducts(
     $first: Int!
@@ -6,12 +5,7 @@ export const GET_PRODUCTS_QUERY = `#graphql
     $sortKey: ProductSortKeys
     $reverse: Boolean
   ) {
-    products(
-      first: $first
-      after: $after
-      sortKey: $sortKey
-      reverse: $reverse
-    ) {
+    products(first: $first, after: $after, sortKey: $sortKey, reverse: $reverse) {
       edges {
         cursor
         node {
@@ -20,14 +14,21 @@ export const GET_PRODUCTS_QUERY = `#graphql
           handle
           description
           availableForSale
-
           featuredImage {
             url
             altText
             width
             height
           }
-
+          images(first: 2) {
+            nodes {
+              id
+              url
+              altText
+              width
+              height
+            }
+          }
           priceRange {
             minVariantPrice {
               amount
@@ -40,7 +41,6 @@ export const GET_PRODUCTS_QUERY = `#graphql
           }
         }
       }
-
       pageInfo {
         hasNextPage
         hasPreviousPage
@@ -63,7 +63,6 @@ export const GET_PRODUCT_QUERY = `#graphql
       vendor
       productType
       tags
-
       images(first: 10) {
         nodes {
           id
@@ -73,7 +72,6 @@ export const GET_PRODUCT_QUERY = `#graphql
           height
         }
       }
-
       variants(first: 50) {
         nodes {
           id
@@ -93,12 +91,10 @@ export const GET_PRODUCT_QUERY = `#graphql
           }
         }
       }
-
       options {
         name
         values
       }
-
       priceRange {
         minVariantPrice {
           amount
