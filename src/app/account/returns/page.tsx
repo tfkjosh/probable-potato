@@ -236,7 +236,7 @@ export default async function CustomerReturnsPage({ searchParams }: ReturnsPageP
         <StoreHeader />
         <main className="mx-auto max-w-3xl px-6 py-20">
           <Link href="/account/returns" className="text-sm text-neutral-500 underline underline-offset-4">← All orders</Link>
-          <h1 className="mt-8 text-3xl font-semibold">We couldn't find that order</h1>
+          <h1 className="mt-8 text-3xl font-semibold">We couldn&apos;t find that order</h1>
           <p className="mt-3 text-neutral-600">This order may not exist or may not belong to your signed-in account.</p>
         </main>
       </>
