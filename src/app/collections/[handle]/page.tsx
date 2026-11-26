@@ -102,7 +102,7 @@ export default async function CollectionPage({ params, searchParams }: Collectio
 
           {nextHref && (
             <div className="mt-14 flex justify-center">
-              <Link href={nextHref} className="border border-white/35 px-8 py-4 text-[10px] font-semibold uppercase tracking-[0.2em] transition-colors hover:border-white hover:bg-white hover:text-black">Load more products <span aria-hidden="true">↗</span></Link>
+              <Link href={nextHref} className="border border-white/35 px-8 py-4 text-[10px] font-semibold uppercase tracking-[0.2em] transition-colors hover:border-white hover:bg-white hover:text-black">Next page <span aria-hidden="true">↗</span></Link>
             </div>
           )}
         </section>
