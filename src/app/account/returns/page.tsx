@@ -28,7 +28,7 @@ const errorMessages: Record<string, string> = {
   invalid: "The return request details were invalid. Please try again.",
   select_items: "Select at least one eligible item to return.",
   unavailable: "We couldn't check return eligibility with Shopify. Please try again.",
-  not_found: "We couldn't find that order in your customer account.",
+  not_found: "We couldn&apos;t find that order in your customer account.",
   eligibility_changed: "One or more items are no longer eligible. Refresh the page and review the updated items.",
   invalid_quantity: "Choose a valid quantity for each selected item.",
   invalid_reason: "Choose one of the return reasons provided for the selected item.",
@@ -282,7 +282,7 @@ export default async function CustomerReturnsPage({ searchParams }: ReturnsPageP
           ) : (
             <div className="mt-5 rounded-2xl border border-dashed border-neutral-300 p-6">
               <p className="font-medium">No items are currently eligible</p>
-              <p className="mt-2 text-sm text-neutral-500">Shopify's return rules determine eligibility for this order.</p>
+              <p className="mt-2 text-sm text-neutral-500">Shopify&apos;s return rules determine eligibility for this order.</p>
               {order.returnInformation.nonReturnableSummary?.nonReturnableReasons.length ? (
                 <p className="mt-3 text-xs text-neutral-500">Reason: {order.returnInformation.nonReturnableSummary.nonReturnableReasons.map(readableStatus).join(", ")}</p>
               ) : null}
