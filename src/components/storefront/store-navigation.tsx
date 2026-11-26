@@ -10,7 +10,11 @@ function getMenuHref(url: string) {
     const parsed = new URL(url);
     const storeDomain = SHOPIFY_STORE_DOMAIN.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
-    if (storeDomain && (parsed.hostname === storeDomain || parsed.hostname.endsWith(`.${storeDomain}`))) {
+    const isStoreDomain = Boolean(storeDomain) && (parsed.hostname === storeDomain || parsed.hostname.endsWith(`.${storeDomain}`));
+    const storefrontRoutes = ["/collections", "/products", "/pages", "/blogs", "/shop", "/cart", "/account"];
+    const isStorefrontRoute = storefrontRoutes.some((path) => parsed.pathname === path || parsed.pathname.startsWith(`${path}/`));
+
+    if (isStoreDomain || isStorefrontRoute) {
       return `${parsed.pathname}${parsed.search}${parsed.hash}`;
     }
   } catch {
