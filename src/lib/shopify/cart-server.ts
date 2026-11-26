@@ -18,6 +18,8 @@ export async function getCurrentCart(): Promise<Omit<ShopifyCart, "id"> | null> 
   }
 
   // The cart ID includes a secret key and must never cross the server boundary.
-  const { id: _secretCartId, ...safeCart } = cart;
+  const safeCart = Object.fromEntries(
+    Object.entries(cart).filter(([key]) => key !== "id"),
+  ) as Omit<typeof cart, "id">;
   return safeCart;
 }
