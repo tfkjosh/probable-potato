@@ -3,10 +3,11 @@ import Link from "next/link";
 import { AccountNavLink } from "@/components/storefront/account-nav-link";
 import { StoreNavigation } from "@/components/storefront/store-navigation";
 import { getMenu } from "@/lib/shopify/actions/get-menu";
+import type { ShopifyMenuItem } from "@/lib/shopify/types";
 import { DEFAULT_MENU_HANDLE, SHOPIFY_STOREFRONT_PRIVATE_TOKEN, SHOPIFY_STORE_DOMAIN } from "@/lib/shopify/constants";
 
 export async function StoreHeader() {
-  let menuItems = [];
+  let menuItems: ShopifyMenuItem[] = [];
 
   if (SHOPIFY_STORE_DOMAIN && SHOPIFY_STOREFRONT_PRIVATE_TOKEN) {
     try {
