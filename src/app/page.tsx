@@ -97,7 +97,7 @@ export default async function HomePage() {
               <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.24em] text-neutral-500">Selected from the archive</p>
               <h2 className="text-3xl font-semibold uppercase tracking-[-0.05em] text-neutral-950 sm:text-4xl">Featured pieces</h2>
             </div>
-            {products.length > 0 && <span className="pb-1 text-xs tabular-nums text-neutral-500">{products.length} pieces</span>}
+            <Link href="/shop" className="pb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-600 transition-colors hover:text-neutral-950">Shop all pieces ↗</Link>
           </div>
           {!isShopifyConfigured ? (
             <div className="border border-dashed border-neutral-300 bg-neutral-50 px-6 py-12 text-center">
