@@ -72,7 +72,7 @@ export const GET_PRODUCT_QUERY = `#graphql
           height
         }
       }
-      variants(first: 50) {
+      variants(first: 250) {
         nodes {
           id
           title
