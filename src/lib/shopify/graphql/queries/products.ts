@@ -13,6 +13,8 @@ export const GET_PRODUCTS_QUERY = `#graphql
           title
           handle
           description
+          productType
+          tags
           availableForSale
           featuredImage {
             url
