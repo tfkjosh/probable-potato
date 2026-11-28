@@ -49,9 +49,23 @@ export function AccountNavLink() {
     <Link
       href="/account"
       aria-label={label}
-      className="rounded-full border border-neutral-300 px-4 py-2 text-xs font-medium text-neutral-800 transition-colors hover:border-neutral-950 hover:bg-neutral-950 hover:text-white"
+      className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/75 transition-colors hover:text-white"
     >
-      {label}
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        fill="none"
+        className="h-[19px] w-[19px]"
+      >
+        <circle cx="12" cy="8" r="3.5" stroke="currentColor" strokeWidth="1.35" />
+        <path
+          d="M5.5 20c.6-3.4 2.9-5.2 6.5-5.2s5.9 1.8 6.5 5.2"
+          stroke="currentColor"
+          strokeWidth="1.35"
+          strokeLinecap="round"
+        />
+      </svg>
+      <span className="hidden sm:inline">{label}</span>
     </Link>
   );
 }
