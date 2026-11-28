@@ -19,7 +19,7 @@ export function StoreHeader() {
           aria-label="HOODHOLIDAYZ home"
         >
           <Image
-            src="/brand/hoodholidayz-hh-star-transparent.webp"
+            src="/brand/hoodholidayz-hh-star-transparent.png"
             alt="HOODHOLIDAYZ"
             width={48}
             height={48}

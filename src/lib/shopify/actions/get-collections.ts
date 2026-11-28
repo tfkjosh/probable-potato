@@ -11,7 +11,7 @@ import type {
 export async function getCollections({
   first = 12,
   after,
-  sortKey = "COLLECTION_DEFAULT",
+  sortKey = "TITLE",
   reverse = false,
 }: GetCollectionsOptions = {}) {
   const data = await shopifyFetch<
@@ -30,9 +30,7 @@ export async function getCollections({
   });
 
   return {
-    collections: data.collections.edges.map(
-      ({ node }) => node
-    ),
+    collections: data.collections.edges.map(({ node }) => node),
     pageInfo: data.collections.pageInfo,
   };
 }
