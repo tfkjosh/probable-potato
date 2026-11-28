@@ -19,7 +19,7 @@ export function StoreHeader() {
           className="flex w-fit items-center transition-opacity hover:opacity-75"
         >
           <Image
-            src="/brand/hoodholidayz-hh-star.svg"
+            src="/brand/hoodholidayz-hh-star-transparent.png"
             alt="HOODHOLIDAYZ"
             width={54}
             height={54}
